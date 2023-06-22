@@ -37,6 +37,11 @@ export default function Header() {
                             <li>
                                 <Link href="/mango/homes">Homes</Link>
                             </li>
+                            <li>
+                                <Link href="/mango/bookings">
+                                    Bookings
+                                </Link>
+                            </li>
                             {/* <li>
                                 <a>Parent</a>
                                 <ul className="p-2">
@@ -66,6 +71,11 @@ export default function Header() {
                         </li>
                         <li>
                             <Link href="/mango/homes">Homes</Link>
+                        </li>
+                        <li>
+                            <Link href="/mango/bookings">
+                                Bookings
+                            </Link>
                         </li>
                         {/* <li tabIndex={0}>
                             <details>
