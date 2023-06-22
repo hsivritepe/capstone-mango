@@ -30,7 +30,12 @@ export default function Header() {
                             className="menu menu-sm dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
                         >
                             <li>
-                                <a>Item 1</a>
+                                <Link href="/mango/dashboard">
+                                    Dashboard
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/mango/homes">Homes</Link>
                             </li>
                             <li>
                                 <a>Parent</a>
@@ -42,9 +47,6 @@ export default function Header() {
                                         <a>Submenu 2</a>
                                     </li>
                                 </ul>
-                            </li>
-                            <li>
-                                <a>Item 3</a>
                             </li>
                         </ul>
                     </div>
