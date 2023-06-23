@@ -5,7 +5,7 @@ import React from 'react';
 function ErrorPage({ statusCode, message }) {
     return (
         <div>
-            <h1>Error {statusCode}</h1>
+            <h1>Error !!! {statusCode}</h1>
             <p>{message}</p>
         </div>
     );

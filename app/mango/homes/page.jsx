@@ -6,7 +6,7 @@ import Link from 'next/link';
 import axios from 'axios';
 import MainTitle from '@/components/MainTitle/page';
 
-import { SearchOutlined } from '@ant-design/icons';
+import { SearchOutlined, HomeOutlined } from '@ant-design/icons';
 const { Search } = Input;
 
 export default function Homes() {
@@ -211,6 +211,10 @@ export default function Homes() {
             <MainTitle
                 title="Homes"
                 description="Here you can see the houses (villas) listed that are in the system."
+                button={true}
+                buttonLink="/mango/homes/add"
+                buttonText="Add Home"
+                icon={<HomeOutlined />}
             />
             <Table
                 columns={columnsWithSearch}

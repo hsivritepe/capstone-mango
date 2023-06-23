@@ -132,7 +132,15 @@ import MainTitle from '@/components/MainTitle/page';
 import ErrorPage from '@/components/Error/page';
 import Link from 'next/link';
 import axios from 'axios';
-import { Button, Form, Input, Space, Switch, Select } from 'antd';
+import {
+    Button,
+    Form,
+    Input,
+    Space,
+    Switch,
+    Select,
+    Alert,
+} from 'antd';
 import { useState, useEffect } from 'react';
 
 const SubmitButton = ({ form }) => {
@@ -218,6 +226,7 @@ export default function HomeAdd() {
 
     if (error) {
         return <ErrorPage error={error} />;
+        // alert(error.result.data.message);
     }
 
     return (
