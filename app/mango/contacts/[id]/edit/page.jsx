@@ -1,191 +1,248 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import MainTitle from '@/components/MainTitle/page';
+import ErrorPage from '@/components/Error/page';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Card, Col, Row, Space, Checkbox } from 'antd';
+import {
+    Card,
+    Col,
+    Row,
+    Space,
+    Form,
+    Input,
+    Button,
+    message,
+} from 'antd';
 import {
     CheckCircleTwoTone,
     CloseCircleTwoTone,
 } from '@ant-design/icons';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
-export default function Home({ params }) {
+const SubmitButton = ({ form }) => {
+    const [submittable, setSubmittable] = useState(false);
+
+    // Watch all values
+    const values = Form.useWatch([], form);
+    console.log('values', values);
+    useEffect(() => {
+        form.validateFields({
+            validateOnly: true,
+        }).then(
+            () => {
+                setSubmittable(true);
+            },
+            () => {
+                setSubmittable(false);
+            }
+        );
+    }, [values]);
+    return (
+        <Button
+            type="primary"
+            htmlType="submit"
+            disabled={!submittable}
+        >
+            Save
+        </Button>
+    );
+};
+
+export default function EditContact({ params }) {
+    const [contactAttributes, setContactAttributes] = useState({});
+    const [error, setError] = useState(null);
     const router = useRouter();
 
-    const [existingAttributes, setExistingAttributes] = useState([]);
-    const [homeAttributes, setHomeAttributes] = useState([]);
-
-    const getHomeAtts = () => {
+    const getContactAtts = () => {
         axios
-            .get(
-                `${process.env.API_PATH}homes/${params.id}}/homeatts`
-            )
+            .get(`${process.env.API_PATH}contacts/${params.id}}`)
             .then((response) => {
-                // console.log(response.data);
-                setExistingAttributes(response.data);
+                console.log('contact', response.data[0]);
+                setContactAttributes(response.data[0]);
             })
             .catch((error) => {
                 console.log(error);
             });
     };
 
-    const getAllAttributes = () => {
-        axios
-            .get(`${process.env.API_PATH}homeattributes`)
-            .then((response) => {
-                // console.log('all attributes', response.data);
-                setHomeAttributes(response.data);
+    const updateContact = async (values) => {
+        const loadingMessage = message.loading('In Progress...', 0);
+        try {
+            await axios.put(
+                `${process.env.API_PATH}contacts/${params.id}`,
+                values
+            );
+            loadingMessage();
+            message.success({
+                content: 'Contact updated successfully!',
+                duration: 4,
+                icon: (
+                    <CheckCircleTwoTone
+                        twoToneColor="#52c41a"
+                        style={{ fontSize: '16px' }}
+                    />
+                ),
             });
+            router.push('/mango/contacts');
+        } catch (error) {}
     };
 
     useEffect(() => {
-        getAllAttributes();
-        getHomeAtts();
+        getContactAtts();
     }, []);
 
-    // Sort the array based on ha_category_id
-    existingAttributes.sort(
-        (a, b) => a.ha_category_id - b.ha_category_id
-    );
-    homeAttributes.sort(
-        (a, b) => a.ha_category_id - b.ha_category_id
-    );
+    const [form] = Form.useForm();
 
-    // Split the array into partial objects based on ha_category_name
-    const homeAttsPartials = homeAttributes.reduce((acc, obj) => {
-        const categoryName = obj.ha_category_name;
-        if (!acc[categoryName]) {
-            acc[categoryName] = [];
-        }
-        acc[categoryName].push(obj);
-        return acc;
-    }, {});
-    console.log('homeattpartials', homeAttsPartials);
-
-    // Split the array into partial objects based on ha_category_name
-    const homeExistingAttsPartials = existingAttributes.reduce(
-        (acc, obj) => {
-            const categoryName = obj.ha_category_name;
-            if (!acc[categoryName]) {
-                acc[categoryName] = [];
-            }
-            acc[categoryName].push(obj);
-            return acc;
-        },
-        {}
-    );
-    // console.log('homeselected', homeExistingAttsPartials);
-
-    const handleAttributeSelection = (attribute) => {
-        const homeId = parseInt(params.id);
-        const updatedSelectedAttributes = [...existingAttributes];
-        const attributeIndex = updatedSelectedAttributes.findIndex(
-            (attr) => attr.attribute_name === attribute.attribute_name
-        );
-        if (attributeIndex !== -1) {
-            updatedSelectedAttributes.splice(attributeIndex, 1);
-        } else {
-            updatedSelectedAttributes.push({
-                home_id: homeId,
-                attribute_id: attribute.id,
-                ...attribute,
-            });
-        }
-        console.log('updated', updatedSelectedAttributes);
-        setExistingAttributes(updatedSelectedAttributes);
+    const onFinish = (values) => {
+        console.log('Success:', values);
+        updateContact(values);
+        // createHome(values);
     };
 
-    const handleSaveClick = async () => {
-        console.log('existing', existingAttributes);
-        const modifiedData = existingAttributes.map(
-            ({
-                attribute_name,
-                ha_category_name,
-                home_vs_name,
-                id,
-                ...rest
-            }) => rest
-        );
-        console.log('modified data', modifiedData);
-
-        try {
-            const response = await axios.delete(
-                `${process.env.API_PATH}homes/${params.id}/homeatts`
-            );
-            // console.log('delete sonrasi', response.data);
-        } catch (error) {
-            console.log(error);
-        }
-
-        try {
-            const response = await axios.post(
-                `${process.env.API_PATH}homes/${params.id}/homeatts`,
-                modifiedData
-            );
-            // console.log('post sonrasi', response.data);
-            router.push(`/mango/homes/${params.id}`);
-        } catch (error) {
-            console.log(error);
-        }
+    const onFinishFailed = (errorInfo) => {
+        console.log('Failed:', errorInfo);
+        setError(errorInfo);
     };
+
+    const handleCancelClick = () => {
+        router.push('/mango/contacts');
+    };
+
+    if (error) {
+        return <ErrorPage error={error} />;
+        // alert(error.result.data.message);
+    }
 
     return (
         <>
-            <MainTitle
-                title={`Edit Home #${params.id} - ${existingAttributes[0]?.home_vs_name}`}
-                description={`Display all home existingAttributes in their respective categories.`}
-            />
-            <div className="p-6">
-                <button
-                    onClick={handleSaveClick}
-                    className="btn btn-secondary"
-                >
-                    SAVE
-                </button>
-            </div>
-            <Row gutter={16} className="bg-gray-200 p-6 gap-y-5">
-                {Object.keys(homeAttsPartials).map((key, index) => (
-                    <Col span={8} key={index}>
-                        <Card title={key} bordered={false}>
-                            {homeAttsPartials[key].map(
-                                (attribute, index) => {
-                                    const isSelected =
-                                        homeExistingAttsPartials[
-                                            key
-                                        ]?.find(
-                                            (existingAttribute) =>
-                                                existingAttribute.attribute_name ===
-                                                attribute.attribute_name
-                                        );
-                                    return (
-                                        <div key={index}>
-                                            <p>
-                                                <Checkbox
-                                                    checked={
-                                                        isSelected !==
-                                                        undefined
-                                                    }
-                                                    onChange={() =>
-                                                        handleAttributeSelection(
-                                                            attribute
-                                                        )
-                                                    }
-                                                >
-                                                    {
-                                                        attribute.attribute_name
-                                                    }
-                                                </Checkbox>
-                                            </p>
-                                        </div>
-                                    );
-                                }
-                            )}
-                        </Card>
-                    </Col>
-                ))}
-            </Row>
+            {contactAttributes.last_name && (
+                <>
+                    <MainTitle
+                        title={`Edit Contact #${params.id} - ${contactAttributes.first_name} ${contactAttributes.last_name}`}
+                        description={`You can change contact information on the contact edit page here.`}
+                    />
+
+                    <Form
+                        form={form}
+                        name="validateOnly"
+                        layout="vertical"
+                        autoComplete="off"
+                        className="p-6 flex flex-col gap-4"
+                        onFinish={onFinish} // Assign the onFinish callback
+                        onFinishFailed={onFinishFailed} // Assign the onFinishFailed callback
+                    >
+                        <div className="flex gap-8 flex-col">
+                            <div className="flex gap-8">
+                                {/* {console.log(
+                            'First Name:',
+                            contactAttributes.last_name
+                        )} */}
+                                <Form.Item
+                                    name="first_name"
+                                    label="Contact First Name"
+                                    className="w-1/2"
+                                    initialValue={
+                                        contactAttributes.first_name
+                                    }
+                                    rules={[
+                                        {
+                                            required: true,
+                                        },
+                                    ]}
+                                >
+                                    <Input />
+                                </Form.Item>
+
+                                <>
+                                    {console.log(
+                                        'First Name:',
+                                        contactAttributes.last_name
+                                    )}
+                                    <Form.Item
+                                        name="last_name"
+                                        label="Contact Last Name"
+                                        className="w-1/2"
+                                        initialValue={
+                                            contactAttributes.last_name
+                                        }
+                                        rules={[
+                                            {
+                                                required: true,
+                                            },
+                                        ]}
+                                    >
+                                        <Input />
+                                    </Form.Item>
+                                </>
+                            </div>
+                            <div className="flex gap-8">
+                                <Form.Item
+                                    name="email"
+                                    label="Contact Email"
+                                    className="w-1/2"
+                                    initialValue={
+                                        contactAttributes.email
+                                    }
+                                    rules={[
+                                        {
+                                            required: true,
+                                        },
+                                    ]}
+                                >
+                                    <Input />
+                                </Form.Item>
+                                <Form.Item
+                                    name="phone"
+                                    label="Contact Phone Number"
+                                    className="w-1/2"
+                                    initialValue={
+                                        contactAttributes.phone
+                                    }
+                                    rules={[
+                                        {
+                                            required: true,
+                                        },
+                                    ]}
+                                >
+                                    <Input />
+                                </Form.Item>
+                            </div>
+                            <Form.Item>
+                                <Space>
+                                    <SubmitButton form={form} />
+                                    <Button
+                                        htmlType="button"
+                                        onClick={handleCancelClick}
+                                    >
+                                        Cancel
+                                    </Button>
+                                </Space>
+                            </Form.Item>
+                        </div>
+                    </Form>
+                </>
+            )}
+
+            {/*
+
+                            <p>
+                                <strong>First Name:</strong>{' '}
+                                {contactAttributes.first_name}
+                            </p>
+                            <p>
+                                <strong>Last Name:</strong>{' '}
+                                {contactAttributes.last_name}
+                            </p>
+                            <p>
+                                <strong>Email:</strong>{' '}
+                                {contactAttributes.email}
+                            </p>
+                            <p>
+                                <strong>Phone:</strong>{' '}
+                                {contactAttributes.phone}
+                            </p> */}
         </>
     );
 }

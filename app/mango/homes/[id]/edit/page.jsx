@@ -11,7 +11,7 @@ import {
 } from '@ant-design/icons';
 import Link from 'next/link';
 
-export default function Home({ params }) {
+export default function EditHome({ params }) {
     const router = useRouter();
 
     const [existingAttributes, setExistingAttributes] = useState([]);

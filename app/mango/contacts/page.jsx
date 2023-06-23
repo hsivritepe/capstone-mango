@@ -6,7 +6,7 @@ import Link from 'next/link';
 import axios from 'axios';
 import MainTitle from '@/components/MainTitle/page';
 
-import { SearchOutlined, HomeOutlined } from '@ant-design/icons';
+import { SearchOutlined, ContactsOutlined } from '@ant-design/icons';
 const { Search } = Input;
 
 export default function Contacts() {
@@ -15,64 +15,51 @@ export default function Contacts() {
 
     const columns = [
         {
-            title: 'Home ID',
+            title: 'ID',
             dataIndex: 'id',
-            key: 'home_id',
+            key: 'id',
             width: 90,
             ellipsis: true,
             responsive: ['sm'],
+            render: (text, record) => (
+                <Link href={`/mango/contacts/${record.id}`}>
+                    {text}
+                </Link>
+            ),
             sorter: (a, b) => a.id - b.id,
         },
         {
-            title: 'Full Name',
-            dataIndex: 'home_vs_name',
-            key: 'home_vs_name',
+            title: 'First Name',
+            dataIndex: 'first_name',
+            key: 'first_name',
             ellipsis: true,
             responsive: ['sm'],
-            render: (name, record) => (
-                <Link href={`/mango/Contacts/${record.id}`}>
-                    {name}
-                </Link>
-            ),
-            sorter: (a, b) =>
-                a.home_vs_name.localeCompare(b.home_vs_name),
-        },
-        {
-            title: 'Real Name',
-            dataIndex: 'home_real_name',
-            key: '1',
-            ellipsis: true,
-            responsive: ['sm'],
-            sorter: (a, b) =>
-                a.home_real_name.localeCompare(b.home_real_name),
-        },
-        {
-            title: 'Dest Name',
-            dataIndex: 'destination_name',
-            key: 'destination_name',
-            ellipsis: true,
-            responsive: ['sm'],
-            sorter: (a, b) =>
-                a.destination_name.localeCompare(b.destination_name),
-        },
-        {
-            title: 'Home Owner',
-            key: 'home_owner',
-            ellipsis: true,
-            responsive: ['sm'],
-            render: (text, record) => (
-                <span>
-                    {record.first_name} {record.last_name}
-                </span>
-            ),
             sorter: (a, b) =>
                 a.first_name.localeCompare(b.first_name),
         },
         {
-            title: 'Action',
-            key: 'operation',
+            title: 'Last Name',
+            dataIndex: 'last_name',
+            key: 'last_name',
             ellipsis: true,
-            render: () => <Link href="/mango/dashboard">action</Link>,
+            responsive: ['sm'],
+            sorter: (a, b) => a.last_name.localeCompare(b.last_name),
+        },
+        {
+            title: 'Email Address',
+            dataIndex: 'email',
+            key: 'email',
+            ellipsis: true,
+            responsive: ['sm'],
+            sorter: (a, b) => a.email.localeCompare(b.email),
+        },
+        {
+            title: 'Phone Number',
+            dataIndex: 'phone',
+            key: 'phone',
+            ellipsis: true,
+            responsive: ['sm'],
+            sorter: (a, b) => a.id - b.id,
         },
     ];
 
@@ -216,7 +203,7 @@ export default function Contacts() {
                 button={true}
                 buttonLink="/mango/contacts/add"
                 buttonText="Add Contact"
-                icon={<HomeOutlined />}
+                icon={<ContactsOutlined />}
             />
             <Table
                 columns={columnsWithSearch}

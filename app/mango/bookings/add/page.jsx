@@ -17,7 +17,7 @@ import {
     message,
 } from 'antd';
 const { RangePicker } = DatePicker;
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 const SubmitButton = ({ form }) => {
@@ -49,7 +49,7 @@ const SubmitButton = ({ form }) => {
     );
 };
 
-export default function HomeAdd() {
+export default function BookingAdd() {
     const [homes, setHomes] = useState([]);
     const [contacts, setContacts] = useState([]);
     const [error, setError] = useState(null);
