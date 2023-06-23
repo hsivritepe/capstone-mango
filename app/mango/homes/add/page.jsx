@@ -129,6 +129,7 @@
 
 import { SaveFilled } from '@ant-design/icons';
 import MainTitle from '@/components/MainTitle/page';
+import ErrorPage from '@/components/Error/page';
 import Link from 'next/link';
 import axios from 'axios';
 import { Button, Form, Input, Space, Switch, Select } from 'antd';
@@ -165,6 +166,7 @@ const SubmitButton = ({ form }) => {
 export default function HomeAdd() {
     const [destinations, setDestinations] = useState([]);
     const [contacts, setContacts] = useState([]);
+    const [error, setError] = useState(null);
 
     const getDestinations = async () => {
         const response = await axios.get(
@@ -183,11 +185,16 @@ export default function HomeAdd() {
     };
 
     const createHome = async (values) => {
-        const response = await axios.post(
-            `${process.env.API_PATH}homes`,
-            values
-        );
-        console.log(response.data);
+        try {
+            const response = await axios.post(
+                `${process.env.API_PATH}homes`,
+                values
+            );
+            console.log(response.data);
+        } catch (error) {
+            console.log('error', error);
+            setError(error);
+        }
     };
 
     useEffect(() => {
@@ -208,6 +215,10 @@ export default function HomeAdd() {
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
+
+    if (error) {
+        return <ErrorPage error={error} />;
+    }
 
     return (
         <>
