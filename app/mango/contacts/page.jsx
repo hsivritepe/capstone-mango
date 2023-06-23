@@ -6,36 +6,31 @@ import Link from 'next/link';
 import axios from 'axios';
 import MainTitle from '@/components/MainTitle/page';
 
-import { SearchOutlined, CalendarOutlined } from '@ant-design/icons';
+import { SearchOutlined, HomeOutlined } from '@ant-design/icons';
 const { Search } = Input;
 
-export default function Bookings() {
+export default function Contacts() {
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
 
     const columns = [
         {
-            title: 'Booking ID',
-            dataIndex: 'booking_id',
-            key: 'booking_id',
+            title: 'Home ID',
+            dataIndex: 'id',
+            key: 'home_id',
             width: 90,
             ellipsis: true,
             responsive: ['sm'],
-            render: (name, record) => (
-                <Link href={`/mango/bookings/${record.id}`}>
-                    {name}
-                </Link>
-            ),
-            sorter: (a, b) => a.booking_id - b.booking_id,
+            sorter: (a, b) => a.id - b.id,
         },
         {
-            title: 'House Name',
+            title: 'Full Name',
             dataIndex: 'home_vs_name',
             key: 'home_vs_name',
             ellipsis: true,
             responsive: ['sm'],
             render: (name, record) => (
-                <Link href={`/mango/homes/${record.home_id}`}>
+                <Link href={`/mango/Contacts/${record.id}`}>
                     {name}
                 </Link>
             ),
@@ -43,40 +38,26 @@ export default function Bookings() {
                 a.home_vs_name.localeCompare(b.home_vs_name),
         },
         {
-            title: 'Check In',
-            dataIndex: 'check_in',
-            key: 'check_in',
+            title: 'Real Name',
+            dataIndex: 'home_real_name',
+            key: '1',
             ellipsis: true,
             responsive: ['sm'],
-            render: (text, record) => (
-                <span>
-                    {new Date(record.check_in).toLocaleString(
-                        'en-US',
-                        { dateStyle: 'short' }
-                    )}
-                </span>
-            ),
-            sorter: (a, b) => a.check_in.localeCompare(b.check_in),
+            sorter: (a, b) =>
+                a.home_real_name.localeCompare(b.home_real_name),
         },
         {
-            title: 'Check Out',
-            dataIndex: 'check_out',
-            key: 'check_out',
+            title: 'Dest Name',
+            dataIndex: 'destination_name',
+            key: 'destination_name',
             ellipsis: true,
             responsive: ['sm'],
-            render: (text, record) => (
-                <span>
-                    {new Date(record.check_out).toLocaleString(
-                        'en-US',
-                        { dateStyle: 'short' }
-                    )}
-                </span>
-            ),
-            sorter: (a, b) => a.check_out.localeCompare(b.check_out),
+            sorter: (a, b) =>
+                a.destination_name.localeCompare(b.destination_name),
         },
         {
-            title: 'Customer',
-            key: 'customer name',
+            title: 'Home Owner',
+            key: 'home_owner',
             ellipsis: true,
             responsive: ['sm'],
             render: (text, record) => (
@@ -88,26 +69,23 @@ export default function Bookings() {
                 a.first_name.localeCompare(b.first_name),
         },
         {
-            title: 'Dest Name',
-            dataIndex: 'destination_name',
-            key: 'destination_name',
+            title: 'Action',
+            key: 'operation',
             ellipsis: true,
-            responsive: ['sm'],
-            sorter: (a, b) =>
-                a.destination_name.localeCompare(b.destination_name),
+            render: () => <Link href="/mango/dashboard">action</Link>,
         },
     ];
 
-    const [bookings, setBookings] = useState([]);
-    const [filteredBookings, setFilteredBookings] = useState([]);
+    const [Contacts, setContacts] = useState([]);
+    const [filteredContacts, setFilteredContacts] = useState([]);
 
-    const getBookings = () => {
+    const getContacts = () => {
         axios
-            .get(`${process.env.API_PATH}bookings`)
+            .get(`${process.env.API_PATH}contacts`)
             .then((response) => {
                 console.log(response.data);
-                setBookings(response.data);
-                setFilteredBookings(response.data);
+                setContacts(response.data);
+                setFilteredContacts(response.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -115,7 +93,7 @@ export default function Bookings() {
     };
 
     useEffect(() => {
-        getBookings();
+        getContacts();
     }, []);
 
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -123,7 +101,7 @@ export default function Bookings() {
         setSearchText(selectedKeys[0]);
         setSearchedColumn(dataIndex);
 
-        const filteredData = bookings.filter((record) => {
+        const filteredData = Contacts.filter((record) => {
             const targetValue = record[dataIndex];
             if (targetValue) {
                 return targetValue
@@ -134,12 +112,12 @@ export default function Bookings() {
             return false;
         });
 
-        setFilteredBookings(filteredData);
+        setFilteredContacts(filteredData);
     };
 
     useEffect(() => {
-        setFilteredBookings(bookings);
-    }, [bookings]);
+        setFilteredContacts(Contacts);
+    }, [Contacts]);
 
     const handleReset = (clearFilters) => {
         clearFilters();
@@ -233,16 +211,16 @@ export default function Bookings() {
     return (
         <>
             <MainTitle
-                title="Bookings"
-                description="Here you can see the bookings (reservations) listed that are in the system."
+                title="Contacts"
+                description="Here you can see the contacts (people) listed that are in the system."
                 button={true}
-                buttonLink="/mango/bookings/add"
-                buttonText="Add Booking"
-                icon={<CalendarOutlined />}
+                buttonLink="/mango/contacts/add"
+                buttonText="Add Contact"
+                icon={<HomeOutlined />}
             />
             <Table
                 columns={columnsWithSearch}
-                dataSource={filteredBookings}
+                dataSource={filteredContacts}
                 scroll={{ x: true }}
                 summary={() => <Table.Summary></Table.Summary>}
                 sticky
