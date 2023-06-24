@@ -38,7 +38,7 @@ const SubmitButton = ({ form }) => {
                 setSubmittable(false);
             }
         );
-    }, [values]);
+    }, [values, form]);
     return (
         <Button
             type="primary"

@@ -5,3 +5,13 @@
 :where(.css-dev-only-do-not-override-1wazalj).ant-form-item {
     margin-bottom: 0;
 }
+
+#calendar > div > div > table > tbody > tr > td,
+#calendar > div > div > table > thead > tr > th {
+    padding: 8px 8px !important;
+}
+#calendar > div > div > table > tbody > tr > td,
+#calendar > div > div > table > thead > tr > th,
+#calendar > div > div > table > tbody > tr > td > span {
+    font-size: 12px !important;
+}

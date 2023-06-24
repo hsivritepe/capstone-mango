@@ -1,9 +1,11 @@
 'use client';
 
 import MainTitle from '@/components/MainTitle/page';
+import Calendar from '@/components/Calendar/page';
+import ErrorPage from '@/components/Error/page';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Card, Col, Row, Space } from 'antd';
+import { Card, Col, Row, Space, Tabs } from 'antd';
 import {
     CheckCircleTwoTone,
     CloseCircleTwoTone,
@@ -13,6 +15,7 @@ import Link from 'next/link';
 export default function Home({ params }) {
     const [existingAttributes, setExistingAttributes] = useState([]);
     const [homeAttributes, setHomeAttributes] = useState([]);
+    const [calendarData, setCalendarData] = useState([]);
 
     const getHomeAtts = () => {
         axios
@@ -36,9 +39,23 @@ export default function Home({ params }) {
                 setHomeAttributes(response.data);
             });
     };
+
+    const getCalendarData = async () => {
+        try {
+            const response = await axios.get(
+                `${process.env.API_PATH}calendars/${params.id}`
+            );
+            console.log('calendar data', response.data);
+            setCalendarData(response.data);
+        } catch (error) {
+            return <ErrorPage error={error} />;
+        }
+    };
+
     useEffect(() => {
         getAllAttributes();
         getHomeAtts();
+        getCalendarData();
     }, []);
 
     // Sort the array based on ha_category_id
@@ -59,7 +76,7 @@ export default function Home({ params }) {
         return acc;
     }, {});
 
-    console.log('homeattpartials', homeAttsPartials);
+    // console.log('homeattpartials', homeAttsPartials);
 
     // Print the sorted array
     // console.log(existingAttributes);
@@ -77,7 +94,89 @@ export default function Home({ params }) {
         {}
     );
 
-    console.log('homeAttsExisting', homeExistingAttsPartials);
+    // console.log('homeAttsExisting', homeExistingAttsPartials);
+
+    const items = [
+        {
+            key: '1',
+            label: `Home Details`,
+            children: (
+                <Row gutter={16} className="bg-gray-200 p-6 gap-y-5">
+                    {Object.keys(homeAttsPartials).map(
+                        (key, index) => (
+                            <Col span={8} key={index}>
+                                <Card title={key} bordered={false}>
+                                    {homeAttsPartials[key].map(
+                                        (attribute, index) => {
+                                            const isSelected =
+                                                homeExistingAttsPartials[
+                                                    key
+                                                ]?.find(
+                                                    (
+                                                        existingAttribute
+                                                    ) =>
+                                                        existingAttribute.attribute_name ===
+                                                        attribute.attribute_name
+                                                );
+                                            return (
+                                                <div key={index}>
+                                                    <p>
+                                                        {isSelected ? (
+                                                            <Space>
+                                                                <CheckCircleTwoTone
+                                                                    twoToneColor="#52c41a"
+                                                                    className="flex"
+                                                                />
+                                                                {
+                                                                    attribute.attribute_name
+                                                                }
+                                                            </Space>
+                                                        ) : (
+                                                            <Space>
+                                                                <CloseCircleTwoTone
+                                                                    twoToneColor="lightgrey"
+                                                                    className="flex"
+                                                                />
+                                                                <div className="text-gray-400">
+                                                                    {
+                                                                        attribute.attribute_name
+                                                                    }
+                                                                </div>
+                                                            </Space>
+                                                        )}
+                                                    </p>
+                                                </div>
+                                            );
+                                        }
+                                    )}
+                                </Card>
+                            </Col>
+                        )
+                    )}
+                    <Col span={24}>
+                        <div className="p-6">
+                            <Link
+                                href={`/mango/homes/${params.id}/edit`}
+                                className="btn btn-primary"
+                            >
+                                EDIT
+                            </Link>
+                        </div>
+                    </Col>
+                </Row>
+            ),
+        },
+        {
+            key: '2',
+            label: `Calendar`,
+            children: <Calendar calendarData={calendarData[0]?.id} />,
+        },
+        {
+            key: '3',
+            label: `Price`,
+            children: `Content of Tab Pane 3`,
+        },
+    ];
 
     return (
         <>
@@ -85,63 +184,11 @@ export default function Home({ params }) {
                 title={`Home #${params.id} - ${existingAttributes[0]?.home_vs_name}`}
                 description={`Display all home existingAttributes in their respective categories.`}
             />
-            <div className="p-6">
-                <Link
-                    href={`/mango/homes/${params.id}/edit`}
-                    className="btn btn-primary"
-                >
-                    EDIT
-                </Link>
-            </div>
-            <Row gutter={16} className="bg-gray-200 p-6 gap-y-5">
-                {Object.keys(homeAttsPartials).map((key, index) => (
-                    <Col span={8} key={index}>
-                        <Card title={key} bordered={false}>
-                            {homeAttsPartials[key].map(
-                                (attribute, index) => {
-                                    const isSelected =
-                                        homeExistingAttsPartials[
-                                            key
-                                        ]?.find(
-                                            (existingAttribute) =>
-                                                existingAttribute.attribute_name ===
-                                                attribute.attribute_name
-                                        );
-                                    return (
-                                        <div key={index}>
-                                            <p>
-                                                {isSelected ? (
-                                                    <Space>
-                                                        <CheckCircleTwoTone
-                                                            twoToneColor="#52c41a"
-                                                            className="flex"
-                                                        />
-                                                        {
-                                                            attribute.attribute_name
-                                                        }
-                                                    </Space>
-                                                ) : (
-                                                    <Space>
-                                                        <CloseCircleTwoTone
-                                                            twoToneColor="lightgrey"
-                                                            className="flex"
-                                                        />
-                                                        <div className="text-gray-400">
-                                                            {
-                                                                attribute.attribute_name
-                                                            }
-                                                        </div>
-                                                    </Space>
-                                                )}
-                                            </p>
-                                        </div>
-                                    );
-                                }
-                            )}
-                        </Card>
-                    </Col>
-                ))}
-            </Row>
+            <Tabs
+                defaultActiveKey="2"
+                items={items}
+                className="p-6"
+            />
         </>
     );
 }
