@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:where(.css-dev-only-do-not-override-1wazalj).ant-form-item {
+    margin-bottom: 0;
+}

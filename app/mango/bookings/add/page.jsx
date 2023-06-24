@@ -107,17 +107,6 @@ export default function BookingAdd() {
         getContacts();
     }, []);
 
-    // message
-    const [messageApi, contextHolder] = message.useMessage();
-    const key = 'updatable';
-    const openMessage = () => {
-        messageApi.open({
-            key,
-            type: 'loading',
-            content: 'Loading...',
-        });
-    };
-
     // For DatePicker settings
     const [arrivalDate, setArrivalDate] = useState(null);
     const [departureDatePickerOpen, setDepartureDatePickerOpen] =

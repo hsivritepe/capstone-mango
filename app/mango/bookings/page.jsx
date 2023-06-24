@@ -15,7 +15,7 @@ export default function Bookings() {
 
     const columns = [
         {
-            title: 'Booking ID',
+            title: 'ID',
             dataIndex: 'booking_id',
             key: 'booking_id',
             width: 90,
@@ -75,7 +75,7 @@ export default function Bookings() {
             sorter: (a, b) => a.check_out.localeCompare(b.check_out),
         },
         {
-            title: 'Customer',
+            title: 'Customer Name',
             key: 'customer name',
             ellipsis: true,
             responsive: ['sm'],

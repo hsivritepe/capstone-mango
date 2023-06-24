@@ -15,7 +15,7 @@ export default function Homes() {
 
     const columns = [
         {
-            title: 'Home ID',
+            title: 'ID',
             dataIndex: 'id',
             key: 'home_id',
             width: 90,
@@ -24,7 +24,7 @@ export default function Homes() {
             sorter: (a, b) => a.id - b.id,
         },
         {
-            title: 'Full Name',
+            title: 'Home Sales Name',
             dataIndex: 'home_vs_name',
             key: 'home_vs_name',
             ellipsis: true,
@@ -36,7 +36,7 @@ export default function Homes() {
                 a.home_vs_name.localeCompare(b.home_vs_name),
         },
         {
-            title: 'Real Name',
+            title: 'Home Real Name',
             dataIndex: 'home_real_name',
             key: '1',
             ellipsis: true,
@@ -65,12 +65,6 @@ export default function Homes() {
             ),
             sorter: (a, b) =>
                 a.first_name.localeCompare(b.first_name),
-        },
-        {
-            title: 'Action',
-            key: 'operation',
-            ellipsis: true,
-            render: () => <Link href="/mango/dashboard">action</Link>,
         },
     ];
 
