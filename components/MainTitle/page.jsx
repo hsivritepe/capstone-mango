@@ -10,17 +10,19 @@ export default function MainTitle({
 }) {
     return (
         <>
-            <div className="main-title p-6 flex justify-between">
+            <div className="main-title px-6 py-10 flex justify-between">
                 <div>
-                    <h1 className="text-red-500 text-3xl font-bold">
+                    <h1 className="text-blueGray-900 text-3xl font-semibold">
                         {title}
                     </h1>
-                    <p className="pt-5">{description}</p>
+                    <p className="pt-5 text-cyan-900">
+                        {description}
+                    </p>
                 </div>
                 {button && (
                     <Link
                         href={buttonLink}
-                        className="btn btn-secondary"
+                        className="btn bg-green-500 hover:bg-green-600 px-6 normal-case text-neutral-100"
                     >
                         {icon} {buttonText}
                     </Link>

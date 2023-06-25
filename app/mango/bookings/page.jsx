@@ -246,7 +246,7 @@ export default function Bookings() {
                 scroll={{ x: true }}
                 summary={() => <Table.Summary></Table.Summary>}
                 sticky
-                className="p-6"
+                className="p-6 bg-white"
             />
         </>
     );

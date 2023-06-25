@@ -139,7 +139,15 @@ export default function EditBooking({ params }) {
                 <>
                     {console.log('ABC', bookingAttributes.last_name)}
                     <MainTitle
-                        title={`Edit Booking #${params.id}`}
+                        title={
+                            <>
+                                Edit Booking #{params.id} -{' '}
+                                <span className="text-blue-700">
+                                    {bookingAttributes.first_name}{' '}
+                                    {bookingAttributes.last_name}
+                                </span>
+                            </>
+                        }
                         description={`You can change booking information on the booking edit page here.`}
                     />
 
@@ -148,7 +156,7 @@ export default function EditBooking({ params }) {
                         name="validateOnly"
                         layout="vertical"
                         autoComplete="off"
-                        className="p-6 flex flex-col gap-4"
+                        className="p-6 flex flex-col gap-4 bg-white"
                         onFinish={onFinish} // Assign the onFinish callback
                         onFinishFailed={onFinishFailed} // Assign the onFinishFailed callback
                     >

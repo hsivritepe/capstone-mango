@@ -6,76 +6,77 @@ import Link from 'next/link';
 import axios from 'axios';
 import MainTitle from '@/components/MainTitle/page';
 
-import { SearchOutlined, ContactsOutlined } from '@ant-design/icons';
+import { SearchOutlined, HomeOutlined } from '@ant-design/icons';
 const { Search } = Input;
 
-export default function Contacts() {
+export default function RecentBookings() {
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
 
     const columns = [
         {
             title: 'ID',
-            dataIndex: 'id',
-            key: 'id',
+            dataIndex: 'booking_id',
+            key: 'booking_id',
             width: 90,
             ellipsis: true,
             responsive: ['sm'],
             sorter: (a, b) => a.id - b.id,
         },
         {
-            title: 'First Name',
-            dataIndex: 'first_name',
-            key: 'first_name',
+            title: 'Home Sales Name',
+            dataIndex: 'home_vs_name',
+            key: 'home_vs_name',
+            ellipsis: true,
+            responsive: ['sm'],
+            render: (name, record) => (
+                <Link
+                    href={`/mango/homes/${record.id}`}
+                    className="text-blue-700 font-medium"
+                >
+                    {name}
+                </Link>
+            ),
+            sorter: (a, b) =>
+                a.home_vs_name.localeCompare(b.home_vs_name),
+        },
+        {
+            title: 'Dest Name',
+            dataIndex: 'destination_name',
+            key: 'destination_name',
             ellipsis: true,
             responsive: ['sm'],
             sorter: (a, b) =>
-                a.first_name.localeCompare(b.first_name),
+                a.destination_name.localeCompare(b.destination_name),
         },
         {
-            title: 'Last Name',
-            dataIndex: 'last_name',
-            key: 'last_name',
+            title: 'Created At',
+            key: 'created_at',
             ellipsis: true,
             responsive: ['sm'],
-            sorter: (a, b) => a.last_name.localeCompare(b.last_name),
-        },
-        {
-            title: 'Email Address',
-            dataIndex: 'email',
-            key: 'email',
-            ellipsis: true,
-            responsive: ['sm'],
-            render: (email, record) => (
-                <Link
-                    href={`/mango/contacts/${record.id}`}
-                    className="text-blue-700 font-medium"
-                >
-                    {email}
-                </Link>
+            render: (text, record) => (
+                <span>
+                    {new Date(record.created_at).toLocaleString(
+                        'en-US',
+                        { dateStyle: 'short' }
+                    )}
+                </span>
             ),
-            sorter: (a, b) => a.email.localeCompare(b.email),
-        },
-        {
-            title: 'Phone Number',
-            dataIndex: 'phone',
-            key: 'phone',
-            ellipsis: true,
-            responsive: ['sm'],
-            sorter: (a, b) => a.id - b.id,
+            sorter: (a, b) =>
+                a.created_at.localeCompare(b.created_at),
         },
     ];
 
-    const [Contacts, setContacts] = useState([]);
-    const [filteredContacts, setFilteredContacts] = useState([]);
+    const [recentBookings, setRecentBookings] = useState([]);
+    const [filteredBookings, setFilteredBookings] = useState([]);
 
-    const getContacts = () => {
+    const getRecentBookings = () => {
         axios
-            .get(`${process.env.API_PATH}contacts`)
+            .get(`${process.env.API_PATH}bookings/recent`)
             .then((response) => {
                 console.log(response.data);
-                setContacts(response.data);
-                setFilteredContacts(response.data);
+                setRecentBookings(response.data);
+                setFilteredBookings(response.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -83,7 +84,7 @@ export default function Contacts() {
     };
 
     useEffect(() => {
-        getContacts();
+        getRecentBookings();
     }, []);
 
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -91,7 +92,7 @@ export default function Contacts() {
         setSearchText(selectedKeys[0]);
         setSearchedColumn(dataIndex);
 
-        const filteredData = Contacts.filter((record) => {
+        const filteredData = homes.filter((record) => {
             const targetValue = record[dataIndex];
             if (targetValue) {
                 return targetValue
@@ -102,12 +103,12 @@ export default function Contacts() {
             return false;
         });
 
-        setFilteredContacts(filteredData);
+        setFilteredBookings(filteredData);
     };
 
     useEffect(() => {
-        setFilteredContacts(Contacts);
-    }, [Contacts]);
+        setFilteredBookings(recentBookings);
+    }, [recentBookings]);
 
     const handleReset = (clearFilters) => {
         clearFilters();
@@ -200,21 +201,17 @@ export default function Contacts() {
 
     return (
         <>
-            <MainTitle
-                title="Contacts"
-                description="Here you can see the contacts (people) listed that are in the system."
-                button={true}
-                buttonLink="/mango/contacts/add"
-                buttonText="Add Contact"
-                icon={<ContactsOutlined />}
-            />
+            <div className="text-lg font-medium px-6 pt-8">
+                Recent Bookings
+            </div>
             <Table
                 columns={columnsWithSearch}
-                dataSource={filteredContacts}
+                dataSource={filteredBookings}
                 scroll={{ x: true }}
+                pagination={false}
                 summary={() => <Table.Summary></Table.Summary>}
                 sticky
-                className="p-6 bg-white"
+                className="p-6"
             />
         </>
     );

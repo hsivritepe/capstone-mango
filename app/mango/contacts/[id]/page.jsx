@@ -32,18 +32,19 @@ export default function ShowContact({ params }) {
     return (
         <>
             <MainTitle
-                title={`Contact #${params.id} - ${contactAttributes.first_name} ${contactAttributes.last_name}`}
+                title={
+                    <>
+                        Contact #{params.id} -{' '}
+                        <span className="text-blue-700">
+                            {contactAttributes.first_name}{' '}
+                            {contactAttributes.last_name}
+                        </span>
+                    </>
+                }
                 description={`Display all contact information.`}
             />
-            <div className="p-6">
-                <Link
-                    href={`/mango/contacts/${params.id}/edit`}
-                    className="btn btn-primary"
-                >
-                    EDIT
-                </Link>
-            </div>
-            <Row gutter={16} className="bg-gray-200 p-6 gap-y-5">
+
+            <Row gutter={16} className="bg-white p-6 gap-y-5">
                 <Col span={12}>
                     <Card title="Contact Information">
                         <Space direction="vertical">
@@ -65,6 +66,16 @@ export default function ShowContact({ params }) {
                             </p>
                         </Space>
                     </Card>
+                </Col>
+                <Col span={24}>
+                    <div className="p-6">
+                        <Link
+                            href={`/mango/contacts/${params.id}/edit`}
+                            className="btn bg-blue-700 hover:bg-blue-800 px-6 normal-case text-neutral-100 hover:text-white"
+                        >
+                            EDIT
+                        </Link>
+                    </div>
                 </Col>
             </Row>
         </>

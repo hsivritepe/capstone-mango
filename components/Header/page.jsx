@@ -3,7 +3,7 @@ import Link from 'next/link';
 export default function Header() {
     return (
         <>
-            <div className="navbar bg-red-100">
+            <div className="navbar justify-between bg-white">
                 <div className="navbar-start">
                     <div className="dropdown">
                         <label
@@ -30,20 +30,34 @@ export default function Header() {
                             className="menu menu-sm dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
                         >
                             <li>
-                                <Link href="/mango/dashboard">
+                                <Link
+                                    href="/mango/dashboard"
+                                    className="font-medium text-base"
+                                >
                                     Dashboard
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/mango/homes">Homes</Link>
+                                <Link
+                                    href="/mango/homes"
+                                    className="font-medium text-base"
+                                >
+                                    Homes
+                                </Link>
                             </li>
                             <li>
-                                <Link href="/mango/bookings">
+                                <Link
+                                    href="/mango/bookings"
+                                    className="font-medium text-base"
+                                >
                                     Bookings
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/mango/contacts">
+                                <Link
+                                    href="/mango/contacts"
+                                    className="font-medium text-base"
+                                >
                                     Contacts
                                 </Link>
                             </li>
@@ -61,7 +75,7 @@ export default function Header() {
                         </ul>
                     </div>
                     <Link
-                        href="/mango/dashboard"
+                        href="/mango/dashboard className='font-medium text-base'"
                         className="btn btn-ghost normal-case text-xl"
                     >
                         mango
@@ -70,20 +84,34 @@ export default function Header() {
                 <div className="navbar-center hidden lg:flex">
                     <ul className="menu menu-horizontal px-1">
                         <li>
-                            <Link href="/mango/dashboard">
+                            <Link
+                                href="/mango/dashboard"
+                                className="font-medium text-base"
+                            >
                                 Dashboard
                             </Link>
                         </li>
                         <li>
-                            <Link href="/mango/homes">Homes</Link>
+                            <Link
+                                href="/mango/homes"
+                                className="font-medium text-base"
+                            >
+                                Homes
+                            </Link>
                         </li>
                         <li>
-                            <Link href="/mango/bookings">
+                            <Link
+                                href="/mango/bookings"
+                                className="font-medium text-base"
+                            >
                                 Bookings
                             </Link>
                         </li>
                         <li>
-                            <Link href="/mango/contacts">
+                            <Link
+                                href="/mango/contacts"
+                                className="font-medium text-base"
+                            >
                                 Contacts
                             </Link>
                         </li>

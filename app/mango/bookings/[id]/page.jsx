@@ -3,7 +3,7 @@
 import MainTitle from '@/components/MainTitle/page';
 import ErrorPage from '@/components/Error/page';
 import Link from 'next/link';
-import { Descriptions } from 'antd';
+import { Descriptions, Row, Col } from 'antd';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -34,17 +34,18 @@ export default function ShowBooking({ params }) {
             {booking.id && (
                 <>
                     <MainTitle
-                        title={`Booking #${params.id}`}
+                        title={
+                            <>
+                                Booking #{params.id} -{' '}
+                                <span className="text-blue-700">
+                                    {booking.first_name}{' '}
+                                    {booking.last_name}
+                                </span>
+                            </>
+                        }
+                        // title={`Booking #${params.id}`}
                         description={`You can see the details of your booking from this page.`}
                     />
-                    <div className="p-6">
-                        <Link
-                            href={`/mango/bookings/${params.id}/edit`}
-                            className="btn btn-primary"
-                        >
-                            EDIT
-                        </Link>
-                    </div>
                     <Descriptions
                         title="Booking Details"
                         bordered
@@ -56,7 +57,7 @@ export default function ShowBooking({ params }) {
                             sm: 2,
                             xs: 1,
                         }}
-                        className="p-6"
+                        className="p-6 bg-white"
                     >
                         <Descriptions.Item label="Home Name">
                             {booking.home_vs_name}
@@ -108,6 +109,16 @@ export default function ShowBooking({ params }) {
                             {booking.phone}
                         </Descriptions.Item>
                     </Descriptions>
+                    <Col span={24} className="bg-white">
+                        <div className="p-6">
+                            <Link
+                                href={`/mango/bookings/${params.id}/edit`}
+                                className="btn bg-blue-700 hover:bg-blue-800 px-6 normal-case text-neutral-100 hover:text-white"
+                            >
+                                EDIT
+                            </Link>
+                        </div>
+                    </Col>
                 </>
             )}
         </>

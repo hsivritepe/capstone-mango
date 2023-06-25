@@ -181,13 +181,21 @@ export default function Home({ params }) {
     return (
         <>
             <MainTitle
-                title={`Home #${params.id} - ${existingAttributes[0]?.home_vs_name}`}
+                title={
+                    <>
+                        Home #{params.id} -{' '}
+                        <span className="text-blue-700">
+                            {existingAttributes[0]?.home_vs_name}
+                        </span>
+                    </>
+                }
                 description={`Display all home existingAttributes in their respective categories.`}
             />
             <Tabs
                 defaultActiveKey="2"
                 items={items}
-                className="p-6"
+                type="card"
+                className="p-6 bg-white"
             />
         </>
     );

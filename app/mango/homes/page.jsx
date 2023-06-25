@@ -30,7 +30,12 @@ export default function Homes() {
             ellipsis: true,
             responsive: ['sm'],
             render: (name, record) => (
-                <Link href={`/mango/homes/${record.id}`}>{name}</Link>
+                <Link
+                    href={`/mango/homes/${record.id}`}
+                    className="text-blue-700 font-medium"
+                >
+                    {name}
+                </Link>
             ),
             sorter: (a, b) =>
                 a.home_vs_name.localeCompare(b.home_vs_name),
