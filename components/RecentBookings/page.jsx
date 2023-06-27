@@ -21,6 +21,14 @@ export default function RecentBookings() {
             width: 90,
             ellipsis: true,
             responsive: ['sm'],
+            render: (booking_id, record) => (
+                <Link
+                    href={`/mango/bookings/${record.booking_id}`}
+                    className="text-blue-800 font-medium"
+                >
+                    {booking_id}
+                </Link>
+            ),
             sorter: (a, b) => a.id - b.id,
         },
         {
@@ -32,7 +40,7 @@ export default function RecentBookings() {
             render: (name, record) => (
                 <Link
                     href={`/mango/homes/${record.id}`}
-                    className="text-blue-700 font-medium"
+                    className="text-blue-800 font-medium"
                 >
                     {name}
                 </Link>

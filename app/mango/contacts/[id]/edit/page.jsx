@@ -120,7 +120,15 @@ export default function EditContact({ params }) {
             {contactAttributes.last_name && (
                 <>
                     <MainTitle
-                        title={`Edit Contact #${params.id} - ${contactAttributes.first_name} ${contactAttributes.last_name}`}
+                        title={
+                            <>
+                                Edit Contact #{params.id} -{' '}
+                                <span className="text-blue-800">
+                                    {contactAttributes.first_name}{' '}
+                                    {contactAttributes.last_name}
+                                </span>
+                            </>
+                        }
                         description={`You can change contact information on the contact edit page here.`}
                     />
 

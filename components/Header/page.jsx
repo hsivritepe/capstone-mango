@@ -1,9 +1,10 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Header() {
     return (
         <>
-            <div className="navbar justify-between bg-white">
+            <div className="navbar justify-between bg-white border-b-4">
                 <div className="navbar-start">
                     <div className="dropdown">
                         <label
@@ -75,10 +76,15 @@ export default function Header() {
                         </ul>
                     </div>
                     <Link
-                        href="/mango/dashboard className='font-medium text-base'"
-                        className="btn btn-ghost normal-case text-xl"
+                        href="/"
+                        className="btn btn-ghost normal-case text-xl font-medium text-base"
                     >
-                        mango
+                        <Image
+                            src="/img/mango-logo-transparent.png"
+                            alt="Landscape picture"
+                            width={120}
+                            height={120}
+                        />
                     </Link>
                 </div>
                 <div className="navbar-center hidden lg:flex">

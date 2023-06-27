@@ -11,6 +11,8 @@ import {
     CloseCircleTwoTone,
 } from '@ant-design/icons';
 import Link from 'next/link';
+import BookingList from '@/components/BookingList/page';
+import HomeImages from '@/components/HomeImages/page';
 
 export default function Home({ params }) {
     const [existingAttributes, setExistingAttributes] = useState([]);
@@ -168,13 +170,23 @@ export default function Home({ params }) {
         },
         {
             key: '2',
-            label: `Calendar`,
-            children: <Calendar calendarData={calendarData[0]?.id} />,
+            label: `Bookings`,
+            children: <BookingList home_id={params.id} />,
         },
+        // {
+        //     key: '3',
+        //     label: `Calendar`,
+        //     children: <Calendar calendarData={calendarData[0]?.id} />,
+        // },
+        // {
+        //     key: '4',
+        //     label: `Price`,
+        //     children: `Content of Tab Pane 3`,
+        // },
         {
             key: '3',
-            label: `Price`,
-            children: `Content of Tab Pane 3`,
+            label: `Images`,
+            children: <HomeImages />,
         },
     ];
 
@@ -184,7 +196,7 @@ export default function Home({ params }) {
                 title={
                     <>
                         Home #{params.id} -{' '}
-                        <span className="text-blue-700">
+                        <span className="text-blue-800">
                             {existingAttributes[0]?.home_vs_name}
                         </span>
                     </>
@@ -192,7 +204,7 @@ export default function Home({ params }) {
                 description={`Display all home existingAttributes in their respective categories.`}
             />
             <Tabs
-                defaultActiveKey="2"
+                defaultActiveKey="3"
                 items={items}
                 type="card"
                 className="p-6 bg-white"

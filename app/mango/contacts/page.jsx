@@ -49,7 +49,7 @@ export default function Contacts() {
             render: (email, record) => (
                 <Link
                     href={`/mango/contacts/${record.id}`}
-                    className="text-blue-700 font-medium"
+                    className="text-blue-800 font-medium"
                 >
                     {email}
                 </Link>
@@ -208,6 +208,10 @@ export default function Contacts() {
                 buttonText="Add Contact"
                 icon={<ContactsOutlined />}
             />
+            <div className="text-right pr-8">
+                <span className="font-semibold">Total:</span>{' '}
+                {filteredContacts.length} contacts
+            </div>
             <Table
                 columns={columnsWithSearch}
                 dataSource={filteredContacts}

@@ -35,7 +35,7 @@ export default function ShowContact({ params }) {
                 title={
                     <>
                         Contact #{params.id} -{' '}
-                        <span className="text-blue-700">
+                        <span className="text-blue-800">
                             {contactAttributes.first_name}{' '}
                             {contactAttributes.last_name}
                         </span>

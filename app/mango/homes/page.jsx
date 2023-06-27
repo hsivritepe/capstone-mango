@@ -32,7 +32,7 @@ export default function Homes() {
             render: (name, record) => (
                 <Link
                     href={`/mango/homes/${record.id}`}
-                    className="text-blue-700 font-medium"
+                    className="text-blue-800 font-medium"
                 >
                     {name}
                 </Link>
@@ -64,9 +64,12 @@ export default function Homes() {
             ellipsis: true,
             responsive: ['sm'],
             render: (text, record) => (
-                <span>
+                <Link
+                    href={`/mango/contacts/${record.ho_contact_id}`}
+                    className="text-blue-800 font-medium"
+                >
                     {record.first_name} {record.last_name}
-                </span>
+                </Link>
             ),
             sorter: (a, b) =>
                 a.first_name.localeCompare(b.first_name),
@@ -215,6 +218,10 @@ export default function Homes() {
                 buttonText="Add Home"
                 icon={<HomeOutlined />}
             />
+            <div className="text-right pr-8">
+                <span className="font-semibold">Total:</span>{' '}
+                {filteredHomes.length} homes
+            </div>
             <Table
                 columns={columnsWithSearch}
                 dataSource={filteredHomes}

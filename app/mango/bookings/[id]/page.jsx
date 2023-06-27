@@ -37,7 +37,7 @@ export default function ShowBooking({ params }) {
                         title={
                             <>
                                 Booking #{params.id} -{' '}
-                                <span className="text-blue-700">
+                                <span className="text-blue-800">
                                     {booking.first_name}{' '}
                                     {booking.last_name}
                                 </span>

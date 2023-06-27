@@ -67,12 +67,25 @@ export default function EditBooking({ params }) {
             });
     };
 
+    // !req.body.user_id ||
+    //     !req.body.home_id ||
+    //     !req.body.customer_contact_id ||
+    //     !req.body.booking_owner ||
+    //     !req.body.check_in ||
+    //     !req.body.check_out;
+
     const updateBooking = async (values) => {
         const loadingMessage = message.loading('In Progress...', 0);
+        const newData = {
+            ...values,
+            check_in: dayjs(values.check_in).format('YYYY-MM-DD'),
+            check_out: dayjs(values.check_out).format('YYYY-MM-DD'),
+        };
+        console.log('newData', newData);
         try {
             await axios.put(
                 `${process.env.API_PATH}bookings/${params.id}`,
-                values
+                newData
             );
             loadingMessage();
             message.success({
@@ -142,7 +155,7 @@ export default function EditBooking({ params }) {
                         title={
                             <>
                                 Edit Booking #{params.id} -{' '}
-                                <span className="text-blue-700">
+                                <span className="text-blue-800">
                                     {bookingAttributes.first_name}{' '}
                                     {bookingAttributes.last_name}
                                 </span>
@@ -162,42 +175,32 @@ export default function EditBooking({ params }) {
                     >
                         <div className="flex gap-8 flex-col">
                             <div className="flex gap-8">
-                                <Form.Item
-                                    name="home_vs_name"
-                                    label="Home VS Name"
-                                    className="w-1/2"
-                                    initialValue={
-                                        bookingAttributes.home_vs_name
-                                    }
-                                    rules={[
+                                <div className="flex flex-col w-1/2">
+                                    <span className="pb-2 font-medium">
+                                        Home VS Name :
+                                    </span>
+                                    <span>
                                         {
-                                            required: true,
-                                        },
-                                    ]}
-                                >
-                                    <Input />
-                                </Form.Item>
-                                <Form.Item
-                                    name="home_real_name"
-                                    label="Home Real Name"
-                                    className="w-1/2"
-                                    initialValue={
-                                        bookingAttributes.home_real_name
-                                    }
-                                    rules={[
+                                            bookingAttributes.home_vs_name
+                                        }
+                                    </span>
+                                </div>
+                                <div className="flex flex-col w-1/2">
+                                    <span className="pb-2 font-medium">
+                                        Home Real Name :
+                                    </span>
+                                    <span>
                                         {
-                                            required: true,
-                                        },
-                                    ]}
-                                >
-                                    <Input />
-                                </Form.Item>
+                                            bookingAttributes.home_real_name
+                                        }
+                                    </span>
+                                </div>
                             </div>
                             <div className="flex gap-8">
                                 <Form.Item
                                     name="check_in"
                                     label="Arrival Date"
-                                    className="w-1/4"
+                                    className="w-1/4 font-medium"
                                     rules={[
                                         {
                                             required: true,
@@ -205,6 +208,7 @@ export default function EditBooking({ params }) {
                                     ]}
                                 >
                                     <DatePicker
+                                        className="font-medium"
                                         disabledDate={disabledDate}
                                         onChange={
                                             handleArrivalDateChange
@@ -217,7 +221,7 @@ export default function EditBooking({ params }) {
                                 <Form.Item
                                     name="check_out"
                                     label="Departure Date"
-                                    className="w-1/4"
+                                    className="w-1/4 font-medium"
                                     rules={[
                                         {
                                             required: true,
@@ -225,6 +229,7 @@ export default function EditBooking({ params }) {
                                     ]}
                                 >
                                     <DatePicker
+                                        className="font-medium"
                                         disabledDate={(current) =>
                                             current &&
                                             current <= arrivalDate
@@ -247,7 +252,7 @@ export default function EditBooking({ params }) {
                                 <Form.Item
                                     name="booking_status"
                                     label="Booking Status"
-                                    className="w-1/4"
+                                    className="w-1/4 font-medium"
                                     initialValue={
                                         bookingAttributes.booking_status
                                     }
@@ -257,12 +262,12 @@ export default function EditBooking({ params }) {
                                         },
                                     ]}
                                 >
-                                    <Input />
+                                    <Input className="font-normal" />
                                 </Form.Item>
                                 <Form.Item
                                     name="booking_owner"
                                     label="Booking Owner"
-                                    className="w-1/4"
+                                    className="w-1/4 font-medium"
                                     initialValue={
                                         bookingAttributes.booking_owner
                                     }
@@ -272,71 +277,42 @@ export default function EditBooking({ params }) {
                                         },
                                     ]}
                                 >
-                                    <Input />
+                                    <Input className="font-normal" />
                                 </Form.Item>
                             </div>
                             <div className="flex gap-8">
-                                <Form.Item
-                                    name="first_name"
-                                    label="First Name"
-                                    className="w-1/4"
-                                    initialValue={
-                                        bookingAttributes.first_name
-                                    }
-                                    rules={[
-                                        {
-                                            required: true,
-                                        },
-                                    ]}
-                                >
-                                    <Input />
-                                </Form.Item>
-                                <Form.Item
-                                    name="last_name"
-                                    label="Last Name"
-                                    className="w-1/4"
-                                    initialValue={
-                                        bookingAttributes.last_name
-                                    }
-                                    rules={[
-                                        {
-                                            required: true,
-                                        },
-                                    ]}
-                                >
-                                    <Input />
-                                </Form.Item>
-
-                                <Form.Item
-                                    name="email"
-                                    label="Email"
-                                    className="w-1/4"
-                                    initialValue={
-                                        bookingAttributes.email
-                                    }
-                                    rules={[
-                                        {
-                                            required: true,
-                                        },
-                                    ]}
-                                >
-                                    <Input />
-                                </Form.Item>
-                                <Form.Item
-                                    name="phone"
-                                    label="Phone"
-                                    className="w-1/4"
-                                    initialValue={
-                                        bookingAttributes.phone
-                                    }
-                                    rules={[
-                                        {
-                                            required: true,
-                                        },
-                                    ]}
-                                >
-                                    <Input />
-                                </Form.Item>
+                                <div className="flex flex-col w-1/4">
+                                    <span className="pb-2 font-medium">
+                                        First Name:
+                                    </span>
+                                    <span>
+                                        {bookingAttributes.first_name}
+                                    </span>
+                                </div>
+                                <div className="flex flex-col w-1/4">
+                                    <span className="pb-2 font-medium">
+                                        Last Name:
+                                    </span>
+                                    <span>
+                                        {bookingAttributes.last_name}
+                                    </span>
+                                </div>
+                                <div className="flex flex-col w-1/4">
+                                    <span className="pb-2 font-medium">
+                                        Email:
+                                    </span>
+                                    <span>
+                                        {bookingAttributes.email}
+                                    </span>
+                                </div>
+                                <div className="flex flex-col w-1/4">
+                                    <span className="pb-2 font-medium">
+                                        Phone:
+                                    </span>
+                                    <span>
+                                        {bookingAttributes.phone}
+                                    </span>
+                                </div>
                             </div>
 
                             <div className="flex gap-8">
