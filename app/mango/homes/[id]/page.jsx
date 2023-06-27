@@ -204,7 +204,7 @@ export default function Home({ params }) {
                 description={`Display all home existingAttributes in their respective categories.`}
             />
             <Tabs
-                defaultActiveKey="3"
+                defaultActiveKey="1"
                 items={items}
                 type="card"
                 className="p-6 bg-white"
