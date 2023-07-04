@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
 import MainTitle from '@/components/MainTitle/page';
+import ErrorPage from '@/components/Error/page';
 
 import { SearchOutlined, HomeOutlined } from '@ant-design/icons';
 const { Search } = Input;
@@ -83,12 +84,11 @@ export default function Homes() {
         axios
             .get(`${process.env.API_PATH}homes`)
             .then((response) => {
-                console.log(response.data);
                 setHomes(response.data);
                 setFilteredHomes(response.data);
             })
             .catch((error) => {
-                console.log(error);
+                return <ErrorPage error={error} />;
             });
     };
 

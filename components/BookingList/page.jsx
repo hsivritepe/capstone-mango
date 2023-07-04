@@ -4,6 +4,7 @@ import { Switch, Table, Input } from 'antd';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
+import ErrorPage from '../Error/page';
 
 import { SearchOutlined, CalendarOutlined } from '@ant-design/icons';
 const { Search } = Input;
@@ -116,24 +117,21 @@ export default function BookingList({ home_id }) {
                     `${process.env.API_PATH}homes/${home_id}/bookings`
                 )
                 .then((response) => {
-                    console.log(response.data);
                     setBookings(response.data);
                     setFilteredBookings(response.data);
                 })
                 .catch((error) => {
-                    console.log(error);
+                    return <ErrorPage error={error} />;
                 });
         } else {
-            console.log('bura2', home_id);
             axios
                 .get(`${process.env.API_PATH}bookings`)
                 .then((response) => {
-                    console.log(response.data);
                     setBookings(response.data);
                     setFilteredBookings(response.data);
                 })
                 .catch((error) => {
-                    console.log(error);
+                    return <ErrorPage error={error} />;
                 });
         }
     };

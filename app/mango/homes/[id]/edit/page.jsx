@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import MainTitle from '@/components/MainTitle/page';
+import ErrorPage from '@/components/Error/page';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Card, Col, Row, Space, Checkbox } from 'antd';
@@ -23,11 +24,10 @@ export default function EditHome({ params }) {
                 `${process.env.API_PATH}homes/${params.id}}/homeatts`
             )
             .then((response) => {
-                // console.log(response.data);
                 setExistingAttributes(response.data);
             })
             .catch((error) => {
-                console.log(error);
+                return <ErrorPage error={error} />;
             });
     };
 
@@ -35,7 +35,6 @@ export default function EditHome({ params }) {
         axios
             .get(`${process.env.API_PATH}homeattributes`)
             .then((response) => {
-                // console.log('all attributes', response.data);
                 setHomeAttributes(response.data);
             });
     };
@@ -62,7 +61,6 @@ export default function EditHome({ params }) {
         acc[categoryName].push(obj);
         return acc;
     }, {});
-    console.log('homeattpartials', homeAttsPartials);
 
     // Split the array into partial objects based on ha_category_name
     const homeExistingAttsPartials = existingAttributes.reduce(
@@ -76,7 +74,6 @@ export default function EditHome({ params }) {
         },
         {}
     );
-    // console.log('homeselected', homeExistingAttsPartials);
 
     const handleAttributeSelection = (attribute) => {
         const homeId = parseInt(params.id);
@@ -93,12 +90,10 @@ export default function EditHome({ params }) {
                 ...attribute,
             });
         }
-        console.log('updated', updatedSelectedAttributes);
         setExistingAttributes(updatedSelectedAttributes);
     };
 
     const handleSaveClick = async () => {
-        console.log('existing', existingAttributes);
         const modifiedData = existingAttributes.map(
             ({
                 attribute_name,
@@ -108,15 +103,13 @@ export default function EditHome({ params }) {
                 ...rest
             }) => rest
         );
-        console.log('modified data', modifiedData);
 
         try {
             const response = await axios.delete(
                 `${process.env.API_PATH}homes/${params.id}/homeatts`
             );
-            // console.log('delete sonrasi', response.data);
         } catch (error) {
-            console.log(error);
+            return <ErrorPage error={error} />;
         }
 
         try {
@@ -124,10 +117,9 @@ export default function EditHome({ params }) {
                 `${process.env.API_PATH}homes/${params.id}/homeatts`,
                 modifiedData
             );
-            // console.log('post sonrasi', response.data);
             router.push(`/mango/homes/${params.id}`);
         } catch (error) {
-            console.log(error);
+            return <ErrorPage error={error} />;
         }
     };
 

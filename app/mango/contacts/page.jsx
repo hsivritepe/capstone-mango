@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
 import MainTitle from '@/components/MainTitle/page';
+import ErrorPage from '@/components/Error/page';
 
 import { SearchOutlined, ContactsOutlined } from '@ant-design/icons';
 const { Search } = Input;
@@ -73,12 +74,11 @@ export default function Contacts() {
         axios
             .get(`${process.env.API_PATH}contacts`)
             .then((response) => {
-                console.log(response.data);
                 setContacts(response.data);
                 setFilteredContacts(response.data);
             })
             .catch((error) => {
-                console.log(error);
+                return <ErrorPage error={error} />;
             });
     };
 

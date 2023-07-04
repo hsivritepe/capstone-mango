@@ -1,6 +1,7 @@
 'use client';
 
 import MainTitle from '@/components/MainTitle/page';
+import ErrorPage from '@/components/Error/page';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Card, Col, Row, Space } from 'antd';
@@ -17,11 +18,10 @@ export default function ShowContact({ params }) {
         axios
             .get(`${process.env.API_PATH}contacts/${params.id}}`)
             .then((response) => {
-                console.log('contact', response.data[0]);
                 setContactAttributes(response.data[0]);
             })
             .catch((error) => {
-                console.log(error);
+                return <ErrorPage error={error} />;
             });
     };
 

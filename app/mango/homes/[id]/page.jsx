@@ -25,11 +25,10 @@ export default function Home({ params }) {
                 `${process.env.API_PATH}homes/${params.id}}/homeatts`
             )
             .then((response) => {
-                // console.log(response.data);
                 setExistingAttributes(response.data);
             })
             .catch((error) => {
-                console.log(error);
+                return <ErrorPage error={error} />;
             });
     };
 
@@ -37,7 +36,6 @@ export default function Home({ params }) {
         axios
             .get(`${process.env.API_PATH}homeattributes`)
             .then((response) => {
-                // console.log('all attributes', response.data);
                 setHomeAttributes(response.data);
             });
     };
@@ -47,7 +45,6 @@ export default function Home({ params }) {
             const response = await axios.get(
                 `${process.env.API_PATH}calendars/${params.id}`
             );
-            console.log('calendar data', response.data);
             setCalendarData(response.data);
         } catch (error) {
             return <ErrorPage error={error} />;
@@ -78,11 +75,6 @@ export default function Home({ params }) {
         return acc;
     }, {});
 
-    // console.log('homeattpartials', homeAttsPartials);
-
-    // Print the sorted array
-    // console.log(existingAttributes);
-
     // Split the array into partial objects based on ha_category_name
     const homeExistingAttsPartials = existingAttributes.reduce(
         (acc, obj) => {
@@ -95,8 +87,6 @@ export default function Home({ params }) {
         },
         {}
     );
-
-    // console.log('homeAttsExisting', homeExistingAttsPartials);
 
     const items = [
         {

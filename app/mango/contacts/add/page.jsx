@@ -55,7 +55,6 @@ export default function ContactAdd() {
         const response = await axios.get(
             `${process.env.API_PATH}contacts`
         );
-        console.log(response.data);
         setContacts(response.data);
     };
 
@@ -66,12 +65,10 @@ export default function ContactAdd() {
                 `${process.env.API_PATH}contacts`,
                 values
             );
-            console.log(response.data);
             loadingMessage();
-            message.success('Success');
+            message.success('Contact created successfully!');
             router.push(`/mango/contacts`);
         } catch (error) {
-            console.log('error', error);
             setError(error);
         }
     };
@@ -83,17 +80,15 @@ export default function ContactAdd() {
     const [form] = Form.useForm();
 
     const onFinish = (values) => {
-        console.log('Success:', values);
         createContact(values);
     };
 
     const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
+        return <ErrorPage error={errorInfo} />;
     };
 
     if (error) {
         return <ErrorPage error={error} />;
-        // alert(error.result.data.message);
     }
 
     return (

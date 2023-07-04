@@ -1,7 +1,6 @@
 import { Table, Typography } from 'antd';
 
 export default function Calendar({ props }) {
-    console.log('calendar data', props);
     const months = [
         'January',
         'February',

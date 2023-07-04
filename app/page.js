@@ -20,9 +20,6 @@ const LoginPage = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Perform login logic here
-        // console.log(`Email: ${email}`);
-        // console.log(`Password: ${password}`);
         router.push('/mango/dashboard');
     };
 
@@ -35,7 +32,9 @@ const LoginPage = () => {
                     width={200}
                     height={200}
                 />
-                <h2 className="text-lg">Next.js + Tailwind CSS</h2>
+                <h2 className="text-lg">
+                    Property Management System (PMS)
+                </h2>
             </div>
             <form className="w-full max-w-sm" onSubmit={handleSubmit}>
                 <div className="mb-4">

@@ -26,7 +26,6 @@ const SubmitButton = ({ form }) => {
 
     // Watch all values
     const values = Form.useWatch([], form);
-    console.log('values', values);
     useEffect(() => {
         form.validateFields({
             validateOnly: true,
@@ -59,11 +58,10 @@ export default function EditContact({ params }) {
         axios
             .get(`${process.env.API_PATH}contacts/${params.id}}`)
             .then((response) => {
-                console.log('contact', response.data[0]);
                 setContactAttributes(response.data[0]);
             })
             .catch((error) => {
-                console.log(error);
+                return <ErrorPage error={error} />;
             });
     };
 
@@ -96,13 +94,10 @@ export default function EditContact({ params }) {
     const [form] = Form.useForm();
 
     const onFinish = (values) => {
-        console.log('Success:', values);
         updateContact(values);
-        // createHome(values);
     };
 
     const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
         setError(errorInfo);
     };
 
@@ -112,7 +107,6 @@ export default function EditContact({ params }) {
 
     if (error) {
         return <ErrorPage error={error} />;
-        // alert(error.result.data.message);
     }
 
     return (
@@ -143,10 +137,6 @@ export default function EditContact({ params }) {
                     >
                         <div className="flex gap-8 flex-col">
                             <div className="flex gap-8">
-                                {/* {console.log(
-                            'First Name:',
-                            contactAttributes.last_name
-                        )} */}
                                 <Form.Item
                                     name="first_name"
                                     label="Contact First Name"
@@ -164,10 +154,6 @@ export default function EditContact({ params }) {
                                 </Form.Item>
 
                                 <>
-                                    {console.log(
-                                        'First Name:',
-                                        contactAttributes.last_name
-                                    )}
                                     <Form.Item
                                         name="last_name"
                                         label="Contact Last Name"

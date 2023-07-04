@@ -1,130 +1,3 @@
-// 'use client';
-
-// import { SaveFilled } from '@ant-design/icons';
-// import MainTitle from '@/components/MainTitle/page';
-// import Link from 'next/link';
-// import { useEffect, useState } from 'react';
-// import { useRouter } from 'next/navigation';
-// import axios from 'axios';
-
-// export default function AddHome({ params }) {
-//     const [homeVsName, setHomeVsName] = useState('');
-//     const [homeRealName, setHomeRealName] = useState('');
-//     const [hoContactId, setHoContactId] = useState('');
-//     const [destinationId, setDestinationId] = useState('');
-//     const [destinations, setDestinations] = useState([]);
-
-//     const isFormValid = () => {
-//         // TO DO: Check if the fields are all filled
-//         if (!homeVsName || !homeRealName || !hoContactId) {
-//             return false;
-//         }
-//         return true;
-//     };
-
-//     const handleChangeHomeSalesName = (e) => {
-//         setHomeVsName(e.target.value);
-//     };
-
-//     const handleChangeHomeRealName = (e) => {
-//         setHomeRealName(e.target.value);
-//     };
-
-//     const handleChangeHoContactId = (e) => {
-//         setHoContactId(e.target.value);
-//     };
-
-//     const handleChangeDestinationId = (e) => {
-//         setDestinationId(e.target.value);
-//     };
-
-//     const handleFormSubmit = (e) => {
-//         e.preventDefault();
-//         console.log('homeVsName', homeVsName);
-//         console.log('homeRealName', homeRealName);
-//     };
-
-//     const getDestinations = async () => {
-//         const response = await axios.get(
-//             `${process.env.API_PATH}destinations`
-//         );
-//         console.log(response.data);
-//         setDestinations(response.data);
-//     };
-
-//     useEffect(() => {
-//         getDestinations();
-//     }, []);
-
-//     return (
-//         <>
-//             <MainTitle
-//                 title={`Add Home`}
-//                 description={`This form is used to add/create a new home.`}
-//                 icon={<SaveFilled />}
-//                 button={true}
-//                 buttonText={`Save`}
-//                 buttonLink={`/mango/bookings`}
-//             />
-//             <div className="addHomeForm">
-//                 <form onSubmit={handleFormSubmit}>
-//                     <h2>Add home form</h2>
-//                     <label>
-//                         home Sales Name:{' '}
-//                         <input
-//                             name="homeVsName"
-//                             type="text"
-//                             onChange={handleChangeHomeSalesName}
-//                         />
-//                     </label>
-//                     <label>
-//                         home Real Name:{' '}
-//                         <input
-//                             name="homeRealName"
-//                             type="homeRealName"
-//                             onChange={handleChangeHomeRealName}
-//                         />
-//                     </label>
-//                     <label>
-//                         HO Contact Name{' '}
-//                         <input
-//                             name="hoContactId"
-//                             type="hoContactId"
-//                             onChange={handleChangeHoContactId}
-//                         />
-//                     </label>
-//                     <label>
-//                         Destination Name
-//                         <select
-//                             name="destinationId"
-//                             onChange={handleChangeDestinationId}
-//                         >
-//                             <option value="">
-//                                 Select a destination
-//                             </option>
-//                             {destinations.map((destination) => (
-//                                 <option
-//                                     key={destination.id}
-//                                     value={destination.destination_id}
-//                                 >
-//                                     {destination.destination_name}
-//                                 </option>
-//                             ))}
-//                         </select>
-//                     </label>
-//                     <button
-//                         type="submit"
-//                         className="btn"
-//                         disabled={!isFormValid()}
-//                     >
-//                         Sign up
-//                     </button>
-//                 </form>
-//             </div>
-//         </>
-//     );
-// }
-
 'use client';
 
 import { SaveFilled } from '@ant-design/icons';
@@ -182,7 +55,6 @@ export default function HomeAdd() {
         const response = await axios.get(
             `${process.env.API_PATH}destinations`
         );
-        console.log(response.data);
         setDestinations(response.data);
     };
 
@@ -190,7 +62,6 @@ export default function HomeAdd() {
         const response = await axios.get(
             `${process.env.API_PATH}contacts`
         );
-        console.log(response.data);
         setContacts(response.data);
     };
 
@@ -200,10 +71,8 @@ export default function HomeAdd() {
                 `${process.env.API_PATH}homes`,
                 values
             );
-            console.log(response.data);
             router.push(`/mango/homes`);
         } catch (error) {
-            console.log('error', error);
             setError(error);
         }
     };
@@ -216,20 +85,15 @@ export default function HomeAdd() {
     const [form] = Form.useForm();
 
     const onFinish = (values) => {
-        console.log('Success:', values);
         createHome(values);
-
-        // Handle the form submission here (e.g., send data to the server)
-        // You can make an API call using axios or perform any other necessary operations
     };
 
     const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
+        return <ErrorPage error={errorInfo} />;
     };
 
     if (error) {
         return <ErrorPage error={error} />;
-        // alert(error.result.data.message);
     }
 
     return (

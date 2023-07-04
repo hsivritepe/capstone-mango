@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
 import MainTitle from '@/components/MainTitle/page';
+import ErrorPage from '@/components/Error/page';
 
 import { SearchOutlined, HomeOutlined } from '@ant-design/icons';
 const { Search } = Input;
@@ -82,12 +83,11 @@ export default function RecentBookings() {
         axios
             .get(`${process.env.API_PATH}bookings/recent`)
             .then((response) => {
-                console.log(response.data);
                 setRecentBookings(response.data);
                 setFilteredBookings(response.data);
             })
             .catch((error) => {
-                console.log(error);
+                return <ErrorPage error={error} />;
             });
     };
 

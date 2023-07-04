@@ -33,7 +33,6 @@ const SubmitButton = ({ form }) => {
                 setSubmittable(true);
             },
             () => {
-                console.log('values', values);
                 setSubmittable(false);
             }
         );
@@ -59,7 +58,6 @@ export default function BookingAdd() {
         const response = await axios.get(
             `${process.env.API_PATH}contacts`
         );
-        console.log(response.data);
         setContacts(response.data);
     };
 
@@ -68,10 +66,8 @@ export default function BookingAdd() {
             const response = await axios.get(
                 `${process.env.API_PATH}homes`
             );
-            console.log(response.data);
             setHomes(response.data);
         } catch (error) {
-            console.log('error', error);
             setError(error);
         }
     };
@@ -86,20 +82,17 @@ export default function BookingAdd() {
             check_in: values.check_in.format('YYYY-MM-DD'),
             check_out: values.check_out.format('YYYY-MM-DD'),
         };
-        console.log('newData', newData);
         try {
             const response = await axios.post(
                 `${process.env.API_PATH}bookings`,
                 newData
             );
-            console.log(response.data);
             router.push('/mango/bookings');
         } catch (error) {
-            console.log('error', error);
             setError(error);
         }
         loadingMessage();
-        message.success('Success');
+        message.success('Booking created successfully!');
     };
 
     useEffect(() => {
@@ -128,19 +121,16 @@ export default function BookingAdd() {
     const [form] = Form.useForm();
 
     const onFinish = (values) => {
-        console.log('Success:', values);
         createBooking(values);
         // createHome(values);
     };
 
     const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
         setError(errorInfo);
     };
 
     if (error) {
         return <ErrorPage error={error} />;
-        // alert(error.result.data.message);
     }
 
     return (

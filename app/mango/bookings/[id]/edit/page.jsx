@@ -25,8 +25,6 @@ const SubmitButton = ({ form }) => {
 
     // Watch all values
     const values = Form.useWatch([], form);
-    console.log('values', values);
-    console.log('submittable', submittable);
     useEffect(() => {
         form.validateFields({
             validateOnly: true,
@@ -59,20 +57,12 @@ export default function EditBooking({ params }) {
         axios
             .get(`${process.env.API_PATH}bookings/${params.id}}`)
             .then((response) => {
-                console.log('booking', response.data[0]);
                 setBookingAttributes(response.data[0]);
             })
             .catch((error) => {
-                console.log(error);
+                return <ErrorPage error={error} />;
             });
     };
-
-    // !req.body.user_id ||
-    //     !req.body.home_id ||
-    //     !req.body.customer_contact_id ||
-    //     !req.body.booking_owner ||
-    //     !req.body.check_in ||
-    //     !req.body.check_out;
 
     const updateBooking = async (values) => {
         const loadingMessage = message.loading('In Progress...', 0);
@@ -81,7 +71,7 @@ export default function EditBooking({ params }) {
             check_in: dayjs(values.check_in).format('YYYY-MM-DD'),
             check_out: dayjs(values.check_out).format('YYYY-MM-DD'),
         };
-        console.log('newData', newData);
+
         try {
             await axios.put(
                 `${process.env.API_PATH}bookings/${params.id}`,
@@ -99,7 +89,9 @@ export default function EditBooking({ params }) {
                 ),
             });
             router.push('/mango/bookings');
-        } catch (error) {}
+        } catch (error) {
+            return <ErrorPage error={error} />;
+        }
     };
 
     useEffect(() => {
@@ -127,13 +119,10 @@ export default function EditBooking({ params }) {
     const [form] = Form.useForm();
 
     const onFinish = (values) => {
-        console.log('Success:', values);
         updateBooking(values);
-        // createHome(values);
     };
 
     const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
         setError(errorInfo);
     };
 
@@ -143,14 +132,12 @@ export default function EditBooking({ params }) {
 
     if (error) {
         return <ErrorPage error={error} />;
-        // alert(error.result.data.message);
     }
 
     return (
         <>
             {bookingAttributes.last_name && (
                 <>
-                    {console.log('ABC', bookingAttributes.last_name)}
                     <MainTitle
                         title={
                             <>

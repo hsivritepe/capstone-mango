@@ -16,7 +16,6 @@ export default function ShowBooking({ params }) {
         const response = await axios.get(
             `${process.env.API_PATH}bookings/${params.id}`
         );
-        console.log(response.data[0]);
         setBooking(response.data[0]);
     };
 
@@ -26,7 +25,6 @@ export default function ShowBooking({ params }) {
 
     if (error) {
         return <ErrorPage error={error} />;
-        // alert(error.result.data.message);
     }
 
     return (
