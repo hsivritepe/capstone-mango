@@ -66,7 +66,6 @@ export default function Dashboard() {
                 title="Dashboard"
                 description="Here you can see the houses (villas) listed that are in the system."
             />
-            TEST : {process.env.API_PATH}
             <section className="flex gap-10 bg-gray-500 p-6">
                 <Card className="flex-1">
                     <div className="flex justify-between">
